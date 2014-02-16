@@ -1,0 +1,3 @@
+12:55:17 **** Clean-only build of configuration Debug for project hello_world ****
+make clean 
+rm -Rf /home/henrique/work/projects/stm32f4-discovery-freertos/hello_world/build
