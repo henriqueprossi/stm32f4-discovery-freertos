@@ -177,6 +177,12 @@ int main(void)
    */
   SystemCoreClockUpdate();
 
+  /* Most systems default to the wanted configuration, with the noticeable exception of the STM32
+   * driver library. If you are using an STM32 with the STM32 driver library then ensure all the
+   * priority bits are assigned to be preempt priority bits by calling
+   * NVIC_PriorityGroupConfig( NVIC_PriorityGroup_4 );
+   * before the RTOS is started.
+   */
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
 
   /* GPIOD Peripheral clock enable. */
