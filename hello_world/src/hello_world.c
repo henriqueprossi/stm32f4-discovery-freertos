@@ -69,7 +69,7 @@ static void leds_blink_task(void * parameters);
 
 void vApplicationIdleHook(void)
 {
-  /* TODO: Put the processor into a low power state. */
+  // TODO: Put the processor into a low power state.
 }
 
 /*==================================================================================================
@@ -98,7 +98,7 @@ void vApplicationIdleHook(void)
 
 void vApplicationStackOverflowHook(TaskHandle_t xTask, signed char *pcTaskName)
 {
-
+  // TODO: It is a place to add stack overflow processing.
 }
 
 /*==================================================================================================
@@ -122,7 +122,7 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, signed char *pcTaskName)
 
 void vApplicationTickHook(void)
 {
-  /* TODO: It is a place to add timer processing. */
+  // TODO: It is a place to add timer processing.
 }
 
 /*==================================================================================================
@@ -146,7 +146,7 @@ void vApplicationTickHook(void)
 
 void vApplicationMallocFailedHook(void)
 {
-
+  // TODO: It is a place to add processing for error on allocating memory.
 }
 
 /*==================================================================================================
@@ -180,12 +180,11 @@ int main(void)
   /* Most systems default to the wanted configuration, with the noticeable exception of the STM32
    * driver library. If you are using an STM32 with the STM32 driver library then ensure all the
    * priority bits are assigned to be preempt priority bits by calling
-   * NVIC_PriorityGroupConfig( NVIC_PriorityGroup_4 );
-   * before the RTOS is started.
+   * NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4) before the RTOS is started.
    */
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
 
-  /* GPIOD Peripheral clock enable. */
+  // GPIOD Peripheral clock enable.
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
    
   /* LED's configuration:
@@ -203,7 +202,7 @@ int main(void)
   GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOD, &GPIO_InitStructure);
 
-  /* The task for blinking the led's is created. It is called just after the scheduler is started. */
+  // The task for blinking the led's is created. It is called just after the scheduler is started.
   xTaskCreate(  leds_blink_task           ,
                 "leds_blink_task"         ,
                 configMINIMAL_STACK_SIZE  ,
@@ -211,7 +210,7 @@ int main(void)
                 tskIDLE_PRIORITY          ,
                 NULL                      );
 
-  /* It is started the scheduler. */
+  // It is started the scheduler.
   vTaskStartScheduler();
 
   /* If all is well, the scheduler will now be running, and the following line will never be reached.
@@ -240,15 +239,15 @@ int main(void)
 static void leds_blink_task(void * parameters)
 {
   for (;;) {
-    GPIO_SetBits(GPIOD, LED4_PIN); /* LED4 ON */
-    vTaskDelay(1000 / portTICK_RATE_MS);
-    GPIO_SetBits(GPIOD, LED3_PIN); /* LED3 ON */
-    vTaskDelay(1000 / portTICK_RATE_MS);
-    GPIO_SetBits(GPIOD, LED5_PIN); /* LED5 ON */
-    vTaskDelay(1000 / portTICK_RATE_MS);
-    GPIO_SetBits(GPIOD, LED6_PIN); /* LED6 ON */
-    vTaskDelay(1000 / portTICK_RATE_MS);
-    GPIO_ResetBits(GPIOD, LED4_PIN | LED3_PIN | LED5_PIN | LED6_PIN);  /* All LEDs are OFF. */
-    vTaskDelay(1000 / portTICK_RATE_MS);
+    GPIO_SetBits(GPIOD, LED4_PIN); // LED4 ON
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    GPIO_SetBits(GPIOD, LED3_PIN); // LED3 ON
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    GPIO_SetBits(GPIOD, LED5_PIN); // LED5 ON
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    GPIO_SetBits(GPIOD, LED6_PIN); // LED6 ON
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    GPIO_ResetBits(GPIOD, LED4_PIN | LED3_PIN | LED5_PIN | LED6_PIN);  // All LEDs are OFF.
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }

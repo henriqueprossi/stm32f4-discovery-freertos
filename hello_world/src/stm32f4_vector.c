@@ -17,7 +17,6 @@
 
 #include "stm32f4_linker.h" /* For stack address. */
 #include "crt.h"            /* For Reset_Handler declaration. */
-#include "FreeRTOSConfig.h"
 
 /*==================================================================================================
   GLOBAL FUNCTIONS
@@ -29,6 +28,9 @@ void HardFault_Handler(void) __attribute__ ((weak, alias ("Dummy_Handler")));
 void MemManage_Handler(void) __attribute__ ((weak, alias ("Dummy_Handler")));
 void BusFault_Handler(void) __attribute__ ((weak, alias ("Dummy_Handler")));
 void UsageFault_Handler(void) __attribute__ ((weak, alias ("Dummy_Handler")));
+void SVC_Handler(void) __attribute__ ((weak, alias ("Dummy_Handler")));
+void PendSV_Handler(void) __attribute__ ((weak, alias ("Dummy_Handler")));
+void SysTick_Handler(void) __attribute__ ((weak, alias ("Dummy_Handler")));
 void DebugMon_Handler(void) __attribute__ ((weak, alias ("Dummy_Handler")));
 
 void WWDG_IRQHandler(void) __attribute__ ((weak, alias ("Dummy_Handler")));
@@ -136,11 +138,11 @@ void (* const g_pfnVectors[])(void) =
   0,                                 /* Reserved */
   0,                                 /* Reserved */
   0,                                 /* Reserved */
-  vPortSVCHandler,                   /* FreeRTOS */
+  SVC_Handler,                       /* FreeRTOS - Used to call the first created task. */
   DebugMon_Handler,
   0,                                 /* Reserved */
-  xPortPendSVHandler,                /* FreeRTOS */
-  xPortSysTickHandler,               /* FreeRTOS */
+  PendSV_Handler,                    /* FreeRTOS - Used to handle context switch. */
+  SysTick_Handler,                   /* FreeRTOS - Used to generate the tick of the RTOS. */
 
   /* External interrupts - IRQs (0 - 239)
    * The number of external interrupt inputs is defined by chip manufacturers. A maximum of 240 external interrupt inputs can
